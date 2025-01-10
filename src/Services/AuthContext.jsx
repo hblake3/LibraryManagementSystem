@@ -1,3 +1,5 @@
+// handles authentication login/signout
+
 import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from './SupabaseClient';
 

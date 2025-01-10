@@ -24,9 +24,10 @@ function Member(props) {
     console.log(`MemberID: ${props.memberid}`);
   };
 
-  const handleSaveChanges = () => {
+  const handleSaveChanges = async () => {
     setShowAlert(true);
-    handleClick();
+    await props.onUpdate();
+    setIsClicked(false);
   };
 
   return (
@@ -56,6 +57,8 @@ function Member(props) {
           phone={props.phone}
           address={props.address}
           status={props.status}
+          onClose={() => setIsClicked(false)}
+          saveChanges={handleSaveChanges}
         />
       )}
     </>

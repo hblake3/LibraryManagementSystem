@@ -1,5 +1,6 @@
 import Header from '../Components/Header.jsx';
 import Member from '../Components/Member.jsx';
+import { MemberService } from '../Services/MemberService';
 import { supabase } from '../Services/SupabaseClient';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -9,25 +10,21 @@ function Members() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // on mount, fetch the members
+  const memberService = new MemberService(supabase);
+
+  const fetchMembers = async () => {
+    setLoading(true);
+    try {
+      const data = await memberService.getMembers();
+      setMembers(data || []);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchMembers = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('member')
-          .select('*')
-          .order('nameLast', { ascending: true });
-        if (error) {
-          setError(error.message);
-        } else {
-          setMembers(data || []);
-        }
-      } catch (e) {
-        setError(e.message);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchMembers();
   }, []);
 
@@ -79,6 +76,7 @@ function Members() {
                 email={member.email}
                 phone={member.phone}
                 address={member.address}
+                onUpdate={fetchMembers}
               />
             ))}
           </tbody>
