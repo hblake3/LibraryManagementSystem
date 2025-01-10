@@ -2,22 +2,25 @@ import { supabase } from '../Services/SupabaseClient.jsx';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Services/AuthContext.jsx';
+import AlertMessage from '../Components/AlertMessage.jsx';
 
 function Login() {
   const [email, setEmail] = useState(''); // email supplied by user, set through onChange
   const [password, setPassword] = useState(''); // password supplied by user, set through onChange
   const [loading, setLoading] = useState(false); // sets state to disable/enable functions while loading
-  const [error, setError] = useState(''); // manage error messages
+  const [showAlert, setShowAlert] = useState(false);
   const { user, loading: authLoading } = useAuth(); // gets auth/user and loading status
+  const [errorMessage, setErrorMessage] = useState('');
+
   const navigate = useNavigate();
 
   const cityName = 'West Valenstead';
 
   // handles the login function following form submission
   const handleLogin = async (e) => {
-    setError(''); // reset the error message
     e.preventDefault(); // prevent any default behavior from the button
     setLoading(true); // show loading state (ie. disable the login button)
+    setShowAlert(false);
 
     // attempt supabase sign in using email and password supplied from input form
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -27,8 +30,8 @@ function Login() {
 
     // if supabase returns with an error...
     if (error) {
-      console.log('Login error:', error.message);
-      setError(error.message);
+      setErrorMessage(error.message);
+      setShowAlert(true);
       setLoading(false);
       return;
     }
@@ -93,9 +96,6 @@ function Login() {
               </span>
             </div>
           </div>
-          <label className="login-error-message" id="login-error">
-            {error}
-          </label>
         </form>
       </>
     );
@@ -104,6 +104,7 @@ function Login() {
   // display login prompt if user is not signed in already
   return (
     <>
+      {showAlert && <AlertMessage message={errorMessage} type="error" />}
       <h1 className="h1-login">
         Welcome to the {cityName}
         <br />
@@ -142,9 +143,6 @@ function Login() {
         >
           {loading ? 'Logging in...' : 'Login'}
         </button>
-        <label className="login-error-message" id="login-error">
-          {error}
-        </label>
       </form>
     </>
   );

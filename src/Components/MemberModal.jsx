@@ -21,9 +21,9 @@ function MemberModal(props) {
             <div className="form-group">
               <label>Status</label>
               <select defaultValue={props.status}>
-                <option value={1}>Active</option>
-                <option value={2}>Halted</option>
-                <option value={3}>Deactivated</option>
+                <option value={1}>🟢 Active</option>
+                <option value={2}>🟡 Halted</option>
+                <option value={3}>🔴 Deactivated</option>
               </select>
             </div>
 
@@ -56,7 +56,13 @@ function MemberModal(props) {
               <button type="button" onClick={props.onClose}>
                 Cancel
               </button>
-              <button type="submit">Save Changes</button>
+              <button
+                type="button"
+                onClick={props.saveChanges}
+                className="save-button"
+              >
+                Save Changes
+              </button>
             </div>
           </form>
         </div>
