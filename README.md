@@ -1,8 +1,16 @@
-# React + Vite
+# Library Management System
+A React + Supabase app for managing a library's books and members. Built with Vite to demonstrate CRUD operations and real-time updates.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Features
+- 📚 Book status tracking
+  
+- 👥 Member management
+  - Click any member to edit their info
+  - Track member status
+  - Easy-to-use modal interface
+- 🔍 Search books and members
+- 🔒 Simple login system using Supabase Auth
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Used
+- React + Vite
+- Supabase (for database and auth)
