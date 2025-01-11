@@ -1,11 +1,9 @@
-import AlertMessage from '../Components/AlertMessage.jsx';
 import MemberModal from '../Components/MemberModal.jsx';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
 function Member(props) {
   const [isClicked, setIsClicked] = useState(false);
-  const [showAlert, setShowAlert] = useState(null);
 
   const statusTypes = {
     1: '🟢',
@@ -25,16 +23,12 @@ function Member(props) {
   };
 
   const handleSaveChanges = async () => {
-    setShowAlert(true);
     await props.onUpdate();
     setIsClicked(false);
   };
 
   return (
     <>
-      {showAlert && (
-        <AlertMessage message="Changes saved successfully!" type="success" />
-      )}
       <tr className="table-row" onClick={handleClick}>
         <td className="status-cell" data-tooltip={toolTips[props.status]}>
           {statusTypes[props.status]}
@@ -58,7 +52,6 @@ function Member(props) {
           address={props.address}
           status={props.status}
           onClose={() => setIsClicked(false)}
-          saveChanges={handleSaveChanges}
         />
       )}
     </>

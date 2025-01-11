@@ -1,5 +1,6 @@
 import Header from '../Components/Header.jsx';
 import Member from '../Components/Member.jsx';
+import AlertMessage from '../Components/AlertMessage.jsx';
 import { MemberService } from '../Services/MemberService';
 import { supabase } from '../Services/SupabaseClient';
 import { useEffect } from 'react';
@@ -9,6 +10,7 @@ function Members() {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   const memberService = new MemberService(supabase);
 
@@ -17,6 +19,11 @@ function Members() {
     try {
       const data = await memberService.getMembers();
       setMembers(data || []);
+      // save was successful, so let's reset it
+      if (saveSuccess) {
+        setSaveSuccess(false);
+        console.log(`saveSuccess: ${saveSuccess}`);
+      }
     } catch (e) {
       setError(e.message);
     } finally {
@@ -27,6 +34,12 @@ function Members() {
   useEffect(() => {
     fetchMembers();
   }, []);
+
+  const handleMemberUpdate = async () => {
+    await fetchMembers(); // First get the fresh member data
+    setSaveSuccess(true); // Then show alert message
+    console.log(`saveSuccess: ${saveSuccess}`);
+  };
 
   // Show loading state
   if (loading) {
@@ -51,6 +64,13 @@ function Members() {
   return (
     <>
       <Header />
+      {saveSuccess && (
+        <AlertMessage
+          message="Changes saved successfully!"
+          type="success"
+          onDismiss={() => setSaveSuccess(false)}
+        />
+      )}
       <h1>Library Members</h1>
       <div className="data-container">
         <table className="data-table">
@@ -76,7 +96,7 @@ function Members() {
                 email={member.email}
                 phone={member.phone}
                 address={member.address}
-                onUpdate={fetchMembers}
+                onUpdate={handleMemberUpdate}
               />
             ))}
           </tbody>
