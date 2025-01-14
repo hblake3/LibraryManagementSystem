@@ -22,7 +22,6 @@ function Members() {
       // save was successful, so let's reset it
       if (saveSuccess) {
         setSaveSuccess(false);
-        console.log(`saveSuccess: ${saveSuccess}`);
       }
     } catch (e) {
       setError(e.message);

@@ -1,6 +1,7 @@
-import CatalogHeader from '../Components/CatalogHeader.jsx';
+import Header from '../Components/Header.jsx';
 import Book from '../Components/Book.jsx';
-import { useAuth } from '../Services/AuthContext.jsx';
+import AlertMessage from '../Components/AlertMessage.jsx';
+import { BookService } from '../Services/BookService';
 import { supabase } from '../Services/SupabaseClient';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -9,29 +10,29 @@ function Catalog() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+
+  const bookService = new BookService(supabase);
 
   // on mount, fetch the books
-  useEffect(() => {
-    const fetchBooks = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('book')
-          .select('*, author!inner(name)') // Just select the name from author
-          .order('title', { ascending: true });
-
-        console.log('Fetched data:', data); // Add this to see what we're getting
-
-        if (error) {
-          setError(error.message);
-        } else {
-          setBooks(data || []);
-        }
-      } catch (e) {
-        setError(e.message);
-      } finally {
-        setLoading(false);
+  const fetchBooks = async () => {
+    setLoading(true);
+    try {
+      const data = await bookService.getBooks();
+      setBooks(data || []);
+      // save was successful, so let's reset it
+      if (saveSuccess) {
+        console.log(`Book Save Success: ${saveSuccess}`);
+        saveSuccess(false);
       }
-    };
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchBooks();
   }, []);
 
@@ -44,7 +45,8 @@ function Catalog() {
   if (error) {
     return (
       <>
-        <CatalogHeader />
+        <Header />
+        <h1>Browse Catalog</h1>
         <div>
           <label className="login-error-message">
             Error loading catalog: {error}
@@ -56,7 +58,8 @@ function Catalog() {
 
   return (
     <>
-      <CatalogHeader />
+      <Header />
+      <h1>Browse Catalog</h1>
       <div className="data-container">
         <table className="data-table">
           <thead>

@@ -1,4 +1,3 @@
-// components/ProtectedRoute.jsx
 import { Navigate } from 'react-router-dom';
 import { supabase } from '../Services/SupabaseClient';
 import { useEffect, useState } from 'react';
