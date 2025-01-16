@@ -1,4 +1,9 @@
+import BookModal from './BookModal.jsx';
+import { useState } from 'react';
+
 function Book(props) {
+  const [isClicked, setIsClicked] = useState(false);
+
   const statusTypes = {
     1: '🟢',
     2: '🟡',
@@ -15,16 +20,45 @@ function Book(props) {
     5: 'Lost / Missing',
   };
 
+  const handleClick = () => {
+    setIsClicked(true);
+    console.log(`BookID: ${props.bookid}`);
+  };
+
+  const handleSaveChanges = async () => {
+    await props.onUpdate();
+    setIsClicked(false);
+  };
+
   return (
-    <tr className="table-row">
-      <td className="status-cell" data-tooltip={toolTips[props.status]}>
-        {statusTypes[props.status]}
-      </td>
-      <td>{props.title}</td>
-      <td>{props.author}</td>
-      <td>{props.year}</td>
-      <td>{props.isbn}</td>
-    </tr>
+    <>
+      <tr className="table-row" onClick={handleClick}>
+        <td className="status-cell" data-tooltip={toolTips[props.status]}>
+          {statusTypes[props.status]}
+        </td>
+        <td>{props.bookid}</td>
+        <td>{props.title}</td>
+        <td>{props.author}</td>
+        <td>{props.year}</td>
+        <td>{props.isbn}</td>
+        <td>{props.genre}</td>
+      </tr>
+
+      {isClicked && (
+        <BookModal
+          status={props.status}
+          saveChanges={handleSaveChanges}
+          onClose={handleClick}
+          bookid={props.bookid}
+          title={props.title}
+          author={props.author}
+          year={props.year}
+          isbn={props.isbn}
+          genre={props.genre}
+          onClose={() => setIsClicked(false)}
+        />
+      )}
+    </>
   );
 }
 

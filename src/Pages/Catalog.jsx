@@ -32,9 +32,20 @@ function Catalog() {
     }
   };
 
+  // used for debugging - displays retrieved books
+  // useEffect(() => {
+  //   console.log('Books:', JSON.stringify(books, null, 2));
+  // }, [books]);
+
   useEffect(() => {
     fetchBooks();
   }, []);
+
+  const handleBookUpdate = async () => {
+    await fetchBooks(); // First get the fresh member data
+    setSaveSuccess(true); // Then show alert message
+    console.log(`saveSuccess: ${saveSuccess}`);
+  };
 
   // Show loading state
   if (loading) {
@@ -65,21 +76,26 @@ function Catalog() {
           <thead>
             <tr>
               <th>Status</th>
+              <th>BookID</th>
               <th>Title</th>
               <th>Author</th>
               <th>Published</th>
               <th>ISBN</th>
+              <th>Genre</th>
             </tr>
           </thead>
           <tbody>
             {books.map((book) => (
               <Book
                 key={book.bookid}
+                bookid={book.bookid}
                 status={book.status}
                 title={book.title}
                 isbn={book.isbn}
                 year={book.year}
-                author={book.author?.name} // get name from author table after join
+                author={book.author?.name} // checks if book.author exists. if yes, return name property. if no, return `undefined`
+                genre={book.book_genre?.map((bg) => bg.genre?.type).join(', ')} // since genres are returned as an array, they need to be mapped for display
+                onUpdate={handleBookUpdate}
               />
             ))}
           </tbody>

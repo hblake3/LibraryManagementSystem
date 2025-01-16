@@ -7,12 +7,20 @@ export class BookService {
 
   async getBooks() {
     const { data, error } = await this.supabase
-    .from('book')
-    .select('*, author!inner(name)') // Just select the name from author
-    .order('title', { ascending: true });
+      .from('book')
+      .select(
+        `
+          *,
+          author(name),
+          book_genre(genre(type))
+        `
+      )
+      .order('title', { ascending: true });
     if (error) throw error;
     return data;
   }
+
+  // will need to modify this to update the table after a change is made
 
   // async updateBook(bookid, updateData) {
   //   const { data, error } = await this.supabase

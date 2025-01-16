@@ -1,18 +1,20 @@
 import { CircleX } from 'lucide-react';
-// import { BookService } from '../Services/BookService';
+import { BookService } from '../Services/BookService';
 import { supabase } from '../Services/SupabaseClient';
 import { useState } from 'react';
 
 function BookModal(props) {
-  const bookService = new bookService(supabase);
+  const bookService = new BookService(supabase);
 
   // Initialize state with props values
   const [formData, setFormData] = useState({
     status: props.status,
+    bookid: props.bookid,
     title: props.title,
     author: props.author,
     year: props.year,
     isbn: props.isbn,
+    genres: props.genre,
   });
 
   // Handle input changes
@@ -44,6 +46,12 @@ function BookModal(props) {
     }
   };
 
+  function inGenres(genreType) {
+    if (!formData.genres) return false;
+    let genreArray = formData.genres.split(', ');
+    return genreArray.includes(genreType);
+  }
+
   return (
     <>
       <div className="modal-overlay">
@@ -55,12 +63,14 @@ function BookModal(props) {
             </button>
           </div>
 
+          {/* Book ID */}
           <form className="modal-form">
             <div className="form-group">
               <label>Book ID</label>
-              <input type="text" disabled value={props.memberid} />
+              <input type="text" disabled value={props.bookid} />
             </div>
 
+            {/* Book Status */}
             <div className="form-group">
               <label>Status</label>
               <select
@@ -71,11 +81,12 @@ function BookModal(props) {
                 <option value={1}>🟢 Available</option>
                 <option value={2}>🟡 On Hold</option>
                 <option value={3}>🔴 Checked Out</option>
-                <option value={3}>🔧 Under Repair</option>
-                <option value={3}>❌ Lost / Missing</option>
+                <option value={4}>🔧 Under Repair</option>
+                <option value={5}>❌ Lost / Missing</option>
               </select>
             </div>
 
+            {/* Book Title */}
             <div className="form-group">
               <label>Title</label>
               <input
@@ -86,6 +97,7 @@ function BookModal(props) {
               />
             </div>
 
+            {/* Book Author */}
             <div className="form-group">
               <label>Author</label>
               <input
@@ -96,32 +108,125 @@ function BookModal(props) {
               />
             </div>
 
+            {/* Book Genre(s) */}
             <div className="form-group">
-              <label>Email</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-              />
+              <label>Genre(s)</label>
+              <fieldset>
+                <div className="genre-grid">
+                  <div className="genre-item">
+                    <input
+                      type="checkbox"
+                      id="Science Fiction"
+                      name="Science Fiction"
+                      defaultChecked={inGenres('Science Fiction')}
+                    />
+                    <label htmlFor="Science Fiction">Science Fiction</label>
+                  </div>
+                  <div className="genre-item">
+                    <input
+                      type="checkbox"
+                      id="Fantasy"
+                      name="Fantasy"
+                      defaultChecked={inGenres('Fantasy')}
+                    />
+                    <label htmlFor="Fantasy">Fantasy</label>
+                  </div>
+                  <div className="genre-item">
+                    <input
+                      type="checkbox"
+                      id="Mystery"
+                      name="Mystery"
+                      defaultChecked={inGenres('Mystery')}
+                    />
+                    <label htmlFor="Mystery">Mystery</label>
+                  </div>
+                  <div className="genre-item">
+                    <input
+                      type="checkbox"
+                      id="Romance"
+                      name="Romance"
+                      defaultChecked={inGenres('Romance')}
+                    />
+                    <label htmlFor="Romance">Romance</label>
+                  </div>
+                  <div className="genre-item">
+                    <input
+                      type="checkbox"
+                      id="Thriller"
+                      name="Thriller"
+                      defaultChecked={inGenres('Thriller')}
+                    />
+                    <label htmlFor="Thriller">Thriller</label>
+                  </div>
+                  <div className="genre-item">
+                    <input
+                      type="checkbox"
+                      id="Historical Fiction"
+                      name="Historical Fiction"
+                      defaultChecked={inGenres('Historical Fiction')}
+                    />
+                    <label htmlFor="Historical Fiction">
+                      Historical Fiction
+                    </label>
+                  </div>
+                  <div className="genre-item">
+                    <input
+                      type="checkbox"
+                      id="Biography"
+                      name="Biography"
+                      defaultChecked={inGenres('Biography')}
+                    />
+                    <label htmlFor="Biography">Biography</label>
+                  </div>
+                  <div className="genre-item">
+                    <input
+                      type="checkbox"
+                      id="Self-Help"
+                      name="Self-Help"
+                      defaultChecked={inGenres('Self-Help')}
+                    />
+                    <label htmlFor="Self-Help">Self-Help</label>
+                  </div>
+                  <div className="genre-item">
+                    <input
+                      type="checkbox"
+                      id="Horror"
+                      name="Horror"
+                      defaultChecked={inGenres('Horror')}
+                    />
+                    <label htmlFor="Horror">Horror</label>
+                  </div>
+                  <div className="genre-item">
+                    <input
+                      type="checkbox"
+                      id="Adventure"
+                      name="Adventure"
+                      defaultChecked={inGenres('Adventure')}
+                    />
+                    <label htmlFor="Adventure">Adventure</label>
+                  </div>
+                </div>
+              </fieldset>
             </div>
 
+            {/* Book Year */}
             <div className="form-group">
-              <label>Phone</label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Address</label>
+              <label>Year</label>
               <input
                 type="text"
-                name="address"
-                value={formData.address}
+                name="year"
+                value={formData.year}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Book ISBN */}
+            <div className="form-group">
+              <label>ISBN</label>
+              <input
+                type="text"
+                name="isbn"
+                value={formData.isbn}
                 onChange={handleChange}
               />
             </div>

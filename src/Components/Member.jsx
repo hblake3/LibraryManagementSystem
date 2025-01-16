@@ -1,6 +1,5 @@
-import MemberModal from '../Components/MemberModal.jsx';
+import MemberModal from './MemberModal.jsx';
 import { useState } from 'react';
-import { useEffect } from 'react';
 
 function Member(props) {
   const [isClicked, setIsClicked] = useState(false);
