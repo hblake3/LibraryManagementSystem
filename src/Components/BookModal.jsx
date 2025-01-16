@@ -17,6 +17,9 @@ function BookModal(props) {
     genres: props.genre,
   });
 
+  const newGenresSet = new Set(); // create a set that will manage the genre(s) changes
+  props.genre.split(', ').forEach((genre) => newGenresSet.add(genre)); // fill the set with the pre-existing genres
+
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,6 +27,19 @@ function BookModal(props) {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleChangeFieldset = (e) => {
+    if (!newGenresSet.has(e.target.name)) {
+      newGenresSet.add(e.target.name);
+    } else {
+      newGenresSet.delete(e.target.name);
+    }
+    setFormData((prev) => ({
+      ...prev,
+      genres: Array.from(newGenresSet).join(', '), // convert from set to comma-seperated string
+    }));
+    console.log(formData);
   };
 
   const handleSave = async () => {
@@ -111,7 +127,7 @@ function BookModal(props) {
             {/* Book Genre(s) */}
             <div className="form-group">
               <label>Genre(s)</label>
-              <fieldset>
+              <fieldset onChange={handleChangeFieldset}>
                 <div className="genre-grid">
                   <div className="genre-item">
                     <input

@@ -32,7 +32,7 @@ function Catalog() {
     }
   };
 
-  // used for debugging - displays retrieved books
+  // used for debugging - displays books retrieved from DB book table
   // useEffect(() => {
   //   console.log('Books:', JSON.stringify(books, null, 2));
   // }, [books]);
