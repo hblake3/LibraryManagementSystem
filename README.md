@@ -2,7 +2,7 @@
 
 A React + Supabase app for managing a library's books and members. Built with Vite to demonstrate CRUD operations and real-time updates.
 
-## STILL A WORK IN PROGRESS 
+## View the work in progress Live Demo! 
 
 [Live Demo](https://library-management-system-gilt-ten.vercel.app/catalog)
 
