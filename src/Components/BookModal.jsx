@@ -1,10 +1,11 @@
 import { CircleX } from 'lucide-react';
 import { BookService } from '../Services/BookService';
 import { supabase } from '../Services/SupabaseClient';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function BookModal(props) {
   const bookService = new BookService(supabase);
+  const [allAuthors, setAllAuthors] = useState([]);
 
   // Initialize state with props values
   const [formData, setFormData] = useState({
@@ -68,6 +69,17 @@ function BookModal(props) {
     return genreArray.includes(genreType);
   }
 
+  useEffect(() => {
+    const loadAuthors = async () => {
+      try {
+        const authorsList = await bookService.getAllAuthors();
+        setAllAuthors(authorsList);
+      } catch (error) {}
+    };
+
+    loadAuthors();
+  }, []);
+
   return (
     <>
       <div className="modal-overlay">
@@ -121,7 +133,13 @@ function BookModal(props) {
                 name="author"
                 value={formData.author}
                 onChange={handleChange}
+                list="authorsList"
               />
+              <datalist id="authorsList">
+                {allAuthors.map((author) => (
+                  <option key={author.name} value={author.name} />
+                ))}
+              </datalist>
             </div>
 
             {/* Book Genre(s) */}
