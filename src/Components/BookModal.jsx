@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 function BookModal(props) {
   const bookService = new BookService(supabase);
   const [allAuthors, setAllAuthors] = useState([]);
+  const [allBookTitles, setAllBooksTitles] = useState([]);
 
   // Initialize state with props values
   const [formData, setFormData] = useState({
@@ -57,9 +58,11 @@ function BookModal(props) {
       );
       if (updatedBook) {
         props.saveChanges();
+      } else {
+        console.log('updateBook did not succeed...');
       }
-    } catch (error) {
-      console.error('Error updating book:', error);
+    } catch (e) {
+      console.error('Error updating book:', e);
     }
   };
 
@@ -78,6 +81,17 @@ function BookModal(props) {
     };
 
     loadAuthors();
+  }, []);
+
+  useEffect(() => {
+    const loadBookTitles = async () => {
+      try {
+        const booksList = await bookService.getBookTitles();
+        setAllBooksTitles(booksList);
+      } catch (error) {}
+    };
+
+    loadBookTitles();
   }, []);
 
   return (
@@ -122,7 +136,13 @@ function BookModal(props) {
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
+                list="booksList"
               />
+              <datalist id="booksList">
+                {allBookTitles.map((book) => (
+                  <option key={book.title} value={book.title} />
+                ))}
+              </datalist>
             </div>
 
             {/* Book Author */}

@@ -23,7 +23,7 @@ function Catalog() {
       // save was successful, so let's reset it
       if (saveSuccess) {
         console.log(`Book Save Success: ${saveSuccess}`);
-        saveSuccess(false);
+        setSaveSuccess(false);
       }
     } catch (e) {
       setError(e.message);
@@ -42,7 +42,7 @@ function Catalog() {
   }, []);
 
   const handleBookUpdate = async () => {
-    await fetchBooks(); // First get the fresh member data
+    await fetchBooks(); // First get the fresh book data
     setSaveSuccess(true); // Then show alert message
     console.log(`saveSuccess: ${saveSuccess}`);
   };
@@ -70,6 +70,13 @@ function Catalog() {
   return (
     <>
       <Header />
+      {saveSuccess && (
+        <AlertMessage
+          message="Changes saved successfully!"
+          type="success"
+          onDismiss={() => setSaveSuccess(false)}
+        />
+      )}
       <h1>Browse Catalog</h1>
       <div className="data-container">
         <table className="data-table">

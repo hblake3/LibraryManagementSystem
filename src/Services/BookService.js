@@ -8,9 +8,19 @@ export class BookService {
   async getAllAuthors() {
     const { data: allAuthors, error } = await this.supabase
       .from('author')
-      .select('name');
+      .select('name')
+      .order('name', { ascending: true });
     if (error) throw error;
     return allAuthors;
+  }
+
+  async getBookTitles() {
+    const { data: allTitles, error } = await this.supabase
+      .from('book')
+      .select('title')
+      .order('title', { ascending: true });
+    if (error) throw error;
+    return allTitles;
   }
 
   async getBooks() {
@@ -30,9 +40,10 @@ export class BookService {
 
   async updateBook(bookid, updateData) {
     console.log('updateData.author:', updateData.author); // data sent from the book modal form
+    console.log('updateData.title:', updateData.title); // data sent from the book modal form
 
     // first try to get the existing author from the table
-    const { data: authorData, error } = await this.supabase
+    const { data: authorData, error: authorError } = await this.supabase
       .from('author')
       .select('authorid')
       .eq('name', updateData.author)
@@ -41,17 +52,29 @@ export class BookService {
     if (!authorData) {
       // author wasn't found, let's create it
       console.log("author wasn't found, let's create it");
-      const { data: newAuthor, error } = await this.supabase
+      const { data: createAuthor, error: createError } = await this.supabase
         .from('author')
         .insert({ name: updateData.author })
         .select('authorid')
         .single();
-      if (error) throw error;
-    } else {
-      // author was found, leave it alone?
-      console.log('fetched author id = ' + authorData.authorid);
+      if (createError) throw createError;
     }
 
-    return 'end of updateBook';
+    const { data: bookSubmission, error: submitError } = await this.supabase
+      .from('book')
+      .update({
+        title: updateData.title,
+      })
+      .eq('bookid', bookid)
+      .select();
+
+    if (submitError) {
+      console.error('Supabase error:', submitError);
+      throw submitError;
+    }
+
+    console.log(JSON.stringify(bookSubmission));
+
+    return bookSubmission[0];
   }
 }
