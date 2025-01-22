@@ -52,11 +52,14 @@ function BookModal(props) {
         status: parseInt(formData.status),
       };
 
+      console.log(JSON.stringify(dataToUpdate));
+
       const updatedBook = await bookService.updateBook(
         props.bookid,
         dataToUpdate
       );
       if (updatedBook) {
+        console.log('updateBook successful!');
         props.saveChanges();
       } else {
         console.log('updateBook did not succeed...');
