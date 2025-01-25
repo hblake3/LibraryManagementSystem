@@ -1,22 +1,23 @@
 # Library Management System
 
-A React + Supabase app for managing a library's books and members. Built with Vite to demonstrate CRUD operations and real-time updates.
+A fullstack React + Supabase app for managing a library's books and members.
 
 ## View the work-in-progress Live Demo! 
 
 [Live Demo](https://library-management-system-gilt-ten.vercel.app/)
 
-Try it out!  
+### Try it out!
+```
 Email: demo@example.com  
 Password: demo123
+```
 
-## Features
+### Features
 
-- 📚 Catalog management
+- 📚 Book catalog management
 - 👥 Member management
-- 🔒 Simple login system using Supabase Auth
+- 🔒 Supabase Auth login system
+- 💾 Atomic updates for database integrity
 
-## Tech Used
-
-- React + Vite
-- Supabase (for database and auth)
+### Tech Used
+- React, Vite, Supabase Postgres DB
