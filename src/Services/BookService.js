@@ -38,63 +38,90 @@ export class BookService {
     return data;
   }
 
+  //*********************************************************************************** */
+  // Since update book requires chaining multiple SQL statements, we need to invoke a remote procedure call to a supabase function to ensure atomicity (all or nothing)
+
   async updateBook(bookid, updateData) {
-    let authorID; // stores new or exisitng authorID for update
-
-    // console.log('updateData.author:', updateData.author); // data sent from the book modal form
-    // console.log('updateData.title:', updateData.title); // data sent from the book modal form
-
-    // first try to get the existing author from the table
-    const { data: authorData, error: authorError } = await this.supabase
-      .from('author')
-      .select('authorid')
-      .eq('name', updateData.author)
-      .maybeSingle();
-
-    if (!authorData) {
-      // author wasn't found, let's create it
-      // console.log("author wasn't found, let's create it");
-      const { data: newAuthorData, error: newAuthorError } = await this.supabase
-        .from('author')
-        .insert({ name: updateData.author })
-        .select('authorid')
-        .single();
-      if (newAuthorError) throw newAuthorError;
-      authorID = newAuthorData.authorid; // assign newly made authorID
-    } else {
-      // author was found, assign exisitng authorID
-      authorID = authorData.authorid;
-    }
-
-    // console.log(`authorID: ${authorID}`);
-
-    // get the existing (or new) author id from the provided name
-
-    const { data: bookSubmission, error: submitError } = await this.supabase
-      .from('book')
-      .update({
-        title: updateData.title,
-        authorid: authorID,
-        status: updateData.status,
-        isbn: updateData.isbn,
-      })
-      .eq('bookid', bookid)
-      .select();
-
-    // TRYING TO UPDATE BOOK_GENRE FOR BOOK UPDATE
-    // UNCOMMENT THE BELOW
-    // .from('book_genre')
-    // .update({
-    //   updateData.genres
-    // });
-
-    if (submitError) {
-      console.error('Supabase error:', submitError);
-      throw submitError;
-    }
-
-    // console.log(JSON.stringify(bookSubmission));
-
-    return bookSubmission[0];
+    console.log(
+      `updateData immediately after clicking save: ${JSON.stringify(
+        updateData
+      )}`
+    );
+    const { data, error } = await this.supabase.rpc('update_book', {
+      p_bookid: bookid,
+      p_update_data: updateData,
+    });
+    if (error) throw error;
+    console.log(JSON.stringify(data));
   }
+
+  //*********************************************************************************** */
+
+  // //////////////////////////////////////////////////////////////////////////////////////
+  // updates book record (and cooresponding tables) when changes are made in a book modal
+  // This isn't supported... I need to use RPC to a supabase function...
+  // async updateBook(bookid, updateData) {
+  //   let authorID; // stores new or existing authorID for the update
+
+  //   // create a supabase transaction for atomic updates on multiple tables
+  //   const { data, error } = await this.supabase.transaction(async (tx) => {
+  //     // first try to get an exisiting author from the author table
+  // const { data: existingAuthor, error: existingAuthorError } = await tx
+  //   .from('author')
+  //   .select('authorid')
+  //   .eq('name', updateData.author)
+  //   .single();
+  // if (existingAuthorError) console.log(existingAuthorError);
+
+  //     console.log(
+  //       `updateBook Status:\n\tbookid: ${bookid}\n\tupdateData: ${JSON.stringify(
+  //         updateData
+  //       )}`
+  //     );
+
+  //     // no authorData found, author doesn't exist in table, let's create it
+  //     if (!existingAuthor) {
+  //       const { data: newAuthorData, error: newAuthorError } = await tx
+  //         .from('author')
+  //         .insert({ name: updateData.author })
+  //         .select('authorid')
+  //         .single();
+  //       if (newAuthorError) console.log(newAuthorError);
+  //       authorID = newAuthorData.authorid; // assign newly made authorID
+  //     }
+  //     // author was found, assign exisitng authorID
+  //     else {
+  //       authorID = existingAuthor.authorid;
+  //     }
+
+  //     // update the book record
+  //     const { data: bookSubmission, error: bookSubmissionError } = await tx
+  //       .from('book')
+  //       .update({
+  //         title: updateData.title,
+  //         authorid: authorID,
+  //         status: updateData.status,
+  //         isbn: updateData.isbn,
+  //       })
+  //       .eq('bookid', bookid)
+  //       .select();
+  //     if (bookSubmissionError) console.log(bookSubmissionError);
+
+  //     console.log('updateData.genres:', updateData.genres);
+
+  //     // now we need to modify genres
+  //     // first delete all existing genre associations
+  //     const { data: deleteGenres, error: deleteGenresError } = await tx
+  //       .from('book_genre')
+  //       .delete()
+  //       .eq('bookid', bookid);
+  //     if (deleteGenresError) console.log(deleteGenresError);
+
+  //     return bookSubmission[0];
+
+  //     /////////////////////////////////
+  //     ////////////// END OF TRANSACTION
+  //     /////////////////////////////////
+  //   });
+  // }
 }

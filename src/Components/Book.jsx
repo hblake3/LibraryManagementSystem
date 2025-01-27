@@ -22,7 +22,7 @@ function Book(props) {
 
   const handleClick = () => {
     setIsClicked(true);
-    console.log(`BookID: ${props.bookid}`);
+    console.log(`Book Data On Click: ${JSON.stringify(props)}`);
   };
 
   const handleSaveChanges = async () => {

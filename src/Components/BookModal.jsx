@@ -7,6 +7,9 @@ function BookModal(props) {
   const bookService = new BookService(supabase);
   const [allAuthors, setAllAuthors] = useState([]);
   const [allBookTitles, setAllBooksTitles] = useState([]);
+  const [selectedGenres, setSelectedGenres] = useState(
+    new Set(props.genre.split(', '))
+  );
 
   // Initialize state with props values
   const [formData, setFormData] = useState({
@@ -25,23 +28,26 @@ function BookModal(props) {
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (name !== 'genres') {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleChangeFieldset = (e) => {
-    if (!newGenresSet.has(e.target.name)) {
-      newGenresSet.add(e.target.name);
+    const newSet = new Set(selectedGenres);
+    if (!newSet.has(e.target.name)) {
+      newSet.add(e.target.name);
     } else {
-      newGenresSet.delete(e.target.name);
+      newSet.delete(e.target.name);
     }
+    setSelectedGenres(newSet);
     setFormData((prev) => ({
       ...prev,
-      genres: Array.from(newGenresSet).join(', '), // convert from set to comma-seperated string
+      genres: Array.from(newSet).join(', '),
     }));
-    console.log(formData);
   };
 
   const handleSave = async () => {
@@ -51,8 +57,6 @@ function BookModal(props) {
         ...formData,
         status: parseInt(formData.status),
       };
-
-      console.log(JSON.stringify(dataToUpdate));
 
       const updatedBook = await bookService.updateBook(
         props.bookid,
