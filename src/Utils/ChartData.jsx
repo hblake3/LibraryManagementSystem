@@ -6,10 +6,6 @@ import { supabase } from '../Services/SupabaseClient';
 
 Chart.register(CategoryScale);
 
-const { data: statusCounts, statusCountsError } = await supabase.rpc(
-  'get_status_counts'
-);
-
 const statusTypes = {
   1: '🟢 Available',
   2: '🟡 On Hold',
@@ -17,7 +13,6 @@ const statusTypes = {
   4: '🔧 Under Repair',
   5: '❌ Lost / Missing',
 };
-console.log(JSON.stringify(statusCounts));
 
 export default function ChartData() {
   const [chartData, setChartData] = useState(null);
