@@ -44,29 +44,25 @@ function BookModal(props) {
       newSet.delete(e.target.name);
     }
     setSelectedGenres(newSet);
+
+    // Filter out any empty strings and then join
+    const genreArray = Array.from(newSet).filter(Boolean);
     setFormData((prev) => ({
       ...prev,
-      genres: Array.from(newSet).join(', '),
+      genres: genreArray.length > 0 ? genreArray.join(', ') : '',
     }));
   };
 
   const handleSave = async () => {
     try {
-      // Convert status to number if it's being received as string
-      const dataToUpdate = {
-        ...formData,
-        status: parseInt(formData.status),
-      };
+      const response = await bookService.updateBook(props.bookid, formData);
 
-      const updatedBook = await bookService.updateBook(
-        props.bookid,
-        dataToUpdate
-      );
-      if (updatedBook) {
+      // Check the success field from the response
+      if (response.success) {
         console.log('updateBook successful!');
         props.saveChanges();
       } else {
-        console.log('updateBook did not succeed...');
+        console.log('updateBook failed:', response.error);
       }
     } catch (e) {
       console.error('Error updating book:', e);
