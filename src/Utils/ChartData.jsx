@@ -1,6 +1,6 @@
 import Chart from 'chart.js/auto';
 import { CategoryScale } from 'chart.js';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PieChart from '../Components/PieChart.jsx';
 import { supabase } from '../Services/SupabaseClient';
 
@@ -20,24 +20,39 @@ const statusTypes = {
 console.log(JSON.stringify(statusCounts));
 
 export default function ChartData() {
-  const [chartData, setChartData] = useState({
-    labels: statusCounts.map((data) => statusTypes[data.status_id]),
-    datasets: [
-      {
-        label: 'Quantity ',
-        data: statusCounts.map((data) => data.count),
-        backgroundColor: [
-          '#00D26A',
-          '#FCD53F',
-          '#F8312F',
-          '#B4ACBC',
-          '#B52246',
-        ],
-        borderColor: 'black',
-        borderWidth: 2,
-      },
-    ],
-  });
+  const [chartData, setChartData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data: statusCounts, error: statusCountsError } =
+        await supabase.rpc('get_status_counts');
+
+      if (statusCounts) {
+        setChartData({
+          labels: statusCounts.map((data) => statusTypes[data.status_id]),
+          datasets: [
+            {
+              label: 'Quantity ',
+              data: statusCounts.map((data) => data.count),
+              backgroundColor: [
+                '#00D26A',
+                '#FCD53F',
+                '#F8312F',
+                '#B4ACBC',
+                '#B52246',
+              ],
+              borderColor: 'black',
+              borderWidth: 2,
+            },
+          ],
+        });
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (!chartData) return null;
 
   return (
     <div className="ChartData">
