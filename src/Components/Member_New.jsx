@@ -41,7 +41,7 @@ function Member_New(props) {
           email={props.email}
           phone={props.phone}
           address={props.address}
-          status={1}
+          status={props.status}
         />
       )}
     </>
