@@ -1,7 +1,7 @@
 import { CircleX } from 'lucide-react';
 import { MemberService } from '../Services/MemberService';
 import { supabase } from '../Services/SupabaseClient';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function MemberModal(props) {
   const memberService = new MemberService(supabase);
@@ -30,8 +30,10 @@ function MemberModal(props) {
       // Convert status to number if it's being received as string
       const dataToUpdate = {
         ...formData,
-        status: parseInt(formData.status),
+        status: parseInt(formData.status, 1),
       };
+
+      console.log(`status sent as : ${dataToUpdate.status}`);
 
       const updatedMember = await memberService.updateMember(
         props.memberid,
@@ -50,7 +52,7 @@ function MemberModal(props) {
       <div className="modal-overlay">
         <div className="modal-content">
           <div className="modal-header">
-            <h2 className="modal-title">Edit Member</h2>
+            <h2 className="modal-title">Member Management</h2>
             <button className="modal-close" onClick={props.onClose}>
               <CircleX />
             </button>
@@ -134,7 +136,7 @@ function MemberModal(props) {
                 onClick={handleSave}
                 className="save-button"
               >
-                Save Changes
+                Save
               </button>
             </div>
           </form>

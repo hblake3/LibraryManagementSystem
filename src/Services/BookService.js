@@ -42,26 +42,23 @@ export class BookService {
   // Since update book requires chaining multiple SQL statements, we need to invoke a remote procedure call to a supabase function to ensure atomicity (all or nothing)
 
   async updateBook(bookid, updateData) {
-    // Log the incoming data
-    console.log('Incoming updateData:', updateData);
-
-    // Create a new object with the correct field name
+    // modify the data to fit the rpc
     const cleanedData = {
       ...updateData,
-      genre: updateData.genres, // Rename genres to genre
+      genre: updateData.genres, // rename genres to genre
       status: parseInt(updateData.status),
     };
-    delete cleanedData.genres; // Remove the old genres field
-    delete cleanedData.bookid; // Remove bookid as it's sent separately
+    delete cleanedData.genres; // remove the old 'genres' field (i should really make these the same name...)
+    delete cleanedData.bookid; // book id doesn't need to be sent twice
 
-    console.log('Cleaned data for RPC:', cleanedData);
+    // console.log('Cleaned data for RPC:', cleanedData); // view data that is sent via rpc
 
     const { data, error } = await this.supabase.rpc('update_book', {
       p_bookid: bookid,
       p_update_data: cleanedData,
     });
 
-    console.log('RPC Response:', JSON.stringify(data));
+    // console.log('RPC Response:', JSON.stringify(data)); // view response from rpc
 
     if (error) throw error;
     return data;

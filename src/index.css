@@ -135,6 +135,31 @@ label {
   margin: 2rem 0;
 }
 
+/* New Member Button Styles */
+.new-member-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem auto;
+  max-width: 90%;
+}
+
+.new-member-button {
+  background-color: var(--accent-color);
+  color: var(--text-primary);
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.new-member-button:hover {
+  background-color: var(--accent-hover);
+}
+
 /* Header and Navigation */
 .header {
   background-color: var(--secondary-bg);

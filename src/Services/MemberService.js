@@ -5,6 +5,14 @@ export class MemberService {
     this.supabase = supabaseClient;
   }
 
+  // get next memberID using rpc
+  async getNextMemberID() {
+    const { data: nextMemberID, error: nextMemberIDError } =
+      await this.supabase.rpc(`get_next_memberid`);
+    if (nextMemberIDError) console.log(`Error getting next member ID: ${nextMemberIDError}`);
+    return nextMemberID;
+  }
+
   async getMembers() {
     const { data, error } = await this.supabase
       .from('member')
@@ -14,13 +22,16 @@ export class MemberService {
     return data;
   }
 
+  // insert or update a member
   async updateMember(memberid, updateData) {
     console.log('Service receiving:', { memberid, updateData });
 
     const { data, error } = await this.supabase
       .from('member')
-      .update(updateData)
-      .eq('memberid', memberid)
+      .upsert({
+        memberid,
+        ...updateData,
+      })
       .select();
 
     if (error) {

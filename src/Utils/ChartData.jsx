@@ -27,7 +27,7 @@ export default function ChartData() {
           labels: statusCounts.map((data) => statusTypes[data.status_id]),
           datasets: [
             {
-              label: 'Quantity ',
+              label: 'Quantity',
               data: statusCounts.map((data) => data.count),
               backgroundColor: [
                 '#00D26A',
@@ -37,7 +37,7 @@ export default function ChartData() {
                 '#B52246',
               ],
               borderColor: 'black',
-              borderWidth: 2,
+              borderWidth: 1.5,
             },
           ],
         });

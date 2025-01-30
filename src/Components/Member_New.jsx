@@ -1,7 +1,7 @@
 import MemberModal from './MemberModal.jsx';
 import { useState } from 'react';
 
-function Member(props) {
+function Member_New(props) {
   const [isClicked, setIsClicked] = useState(false);
 
   const statusTypes = {
@@ -18,7 +18,7 @@ function Member(props) {
 
   const handleClick = () => {
     setIsClicked(!isClicked);
-    console.log(`MemberID: ${props.memberid}`);
+    console.log(`New Member ID: ${props.memberid}`);
   };
 
   const handleSaveChanges = async () => {
@@ -28,17 +28,9 @@ function Member(props) {
 
   return (
     <>
-      <tr className="table-row" onClick={handleClick}>
-        <td className="status-cell" data-tooltip={toolTips[props.status]}>
-          {statusTypes[props.status]}
-        </td>
-        <td>{props.memberid}</td>
-        <td>{props.nameLast}</td>
-        <td>{props.nameFirst}</td>
-        <td>{props.email}</td>
-        <td>{props.phone}</td>
-        <td>{props.address}</td>
-      </tr>
+      <button onClick={handleClick} className="new-member-button">
+        Add New Member
+      </button>
       {isClicked && (
         <MemberModal
           saveChanges={handleSaveChanges}
@@ -49,11 +41,11 @@ function Member(props) {
           email={props.email}
           phone={props.phone}
           address={props.address}
-          status={props.status}
+          status={1}
         />
       )}
     </>
   );
 }
 
-export default Member;
+export default Member_New;

@@ -1,5 +1,6 @@
 import Header from '../Components/Header.jsx';
 import Member from '../Components/Member.jsx';
+import Member_New from '../Components/Member_New.jsx';
 import AlertMessage from '../Components/AlertMessage.jsx';
 import { MemberService } from '../Services/MemberService';
 import { supabase } from '../Services/SupabaseClient';
@@ -11,6 +12,7 @@ function Members() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [nextMemberID, setNextMemberID] = useState(null);
 
   const memberService = new MemberService(supabase);
 
@@ -30,14 +32,23 @@ function Members() {
     }
   };
 
+  // do this on mount
   useEffect(() => {
-    fetchMembers();
+    const initializeData = async () => {
+      await fetchMembers();
+      await handleNextMemberID();
+    };
+    initializeData();
   }, []);
 
   const handleMemberUpdate = async () => {
-    await fetchMembers(); // First get the fresh member data
-    setSaveSuccess(true); // Then show alert message
+    await fetchMembers(); // first get the fresh member data
+    setSaveSuccess(true); // then show alert message
     console.log(`saveSuccess: ${saveSuccess}`);
+  };
+
+  const handleNextMemberID = async () => {
+    setNextMemberID(await memberService.getNextMemberID());
   };
 
   // Show loading state
@@ -60,6 +71,7 @@ function Members() {
     );
   }
 
+  // normal state
   return (
     <>
       <Header />
@@ -71,6 +83,20 @@ function Members() {
         />
       )}
       <h1>Library Members</h1>
+
+      <div className="new-member-container">
+        <Member_New
+          onUpdate={handleMemberUpdate}
+          memberid={nextMemberID}
+          status={1}
+          nameLast=""
+          nameFirst=""
+          email=""
+          phone=""
+          address=""
+        />
+      </div>
+
       <div className="data-container">
         <table className="data-table">
           <thead>
