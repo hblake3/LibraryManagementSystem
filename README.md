@@ -1,6 +1,6 @@
 # Library Management System
 
-A fullstack React + Supabase app for managing a library's books and members.
+A full stack React + Supabase app for managing a library's books and members.
 
 ## View the work-in-progress Live Demo! 
 
