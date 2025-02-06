@@ -11,7 +11,10 @@ Password: demo123
 ```
 
 ## Features
-
+ ### 📚 Book catalog management
+ ![edit book](https://raw.githubusercontent.com/hblake3/LibraryManagementSystem/refs/heads/main/readmescreenshots/editBook.gif)
+ ### 📊 Real-time dashboard charts using Chart.js
+  ![edit book](https://raw.githubusercontent.com/hblake3/LibraryManagementSystem/refs/heads/main/readmescreenshots/charts.gif)
  ### 👥 Member management
  ### 🔒 Supabase Auth login system
  ### 💾 Atomic updates for database integrity
