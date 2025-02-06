@@ -2,7 +2,7 @@
 
 A full stack React + Supabase app for managing a library's books and members.
 
-## View the work-in-progress Live Demo! 
+## View the work-in-progress Live Demo 
 
 ### [Try The Live Demo](https://library-management-system-gilt-ten.vercel.app/)
 ```
