@@ -17,7 +17,7 @@ Password: demo123
   ![edit book](https://raw.githubusercontent.com/hblake3/LibraryManagementSystem/refs/heads/main/readmescreenshots/charts.gif)
  ### 👥 Member management
  ### 🔒 Supabase Auth login system
- ### 💾 Atomic updates for database integrity
+ ### 📡 Remote Procedure Calls for database integrity
 
 ### Tech Used
 - React, Vite, Supabase Postgres DB
