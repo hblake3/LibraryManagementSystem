@@ -1,7 +1,7 @@
 import BookModal from './BookModal.jsx';
 import { useState } from 'react';
 
-function Book(props) {
+function Book_New(props) {
   const [isClicked, setIsClicked] = useState(false);
 
   const statusTypes = {
@@ -32,34 +32,24 @@ function Book(props) {
 
   return (
     <>
-      <tr className="table-row" onClick={handleClick}>
-        <td className="status-cell" data-tooltip={toolTips[props.status]}>
-          {statusTypes[props.status]}
-        </td>
-        <td>{props.bookid}</td>
-        <td>{props.title}</td>
-        <td>{props.author}</td>
-        <td>{props.year}</td>
-        <td>{props.isbn}</td>
-        <td>{props.genre}</td>
-      </tr>
-
+      <button onClick={handleClick} className="new-member-book-button">
+        Add New Book
+      </button>
       {isClicked && (
         <BookModal
-          status={props.status}
-          saveChanges={handleSaveChanges}
           onClose={handleClick}
+          saveChanges={handleSaveChanges}
           bookid={props.bookid}
+          status={props.status}
           title={props.title}
           author={props.author}
           year={props.year}
           isbn={props.isbn}
           genre={props.genre}
-          onClose={handleClick}
         />
       )}
     </>
   );
 }
 
-export default Book;
+export default Book_New;

@@ -28,7 +28,7 @@ function Member_New(props) {
 
   return (
     <>
-      <button onClick={handleClick} className="new-member-button">
+      <button onClick={handleClick} className="new-member-book-button">
         Add New Member
       </button>
       {isClicked && (
@@ -36,12 +36,12 @@ function Member_New(props) {
           saveChanges={handleSaveChanges}
           onClose={handleClick}
           memberid={props.memberid}
+          status={props.status}
           nameFirst={props.nameFirst}
           nameLast={props.nameLast}
           email={props.email}
           phone={props.phone}
           address={props.address}
-          status={props.status}
         />
       )}
     </>

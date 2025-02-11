@@ -4,6 +4,7 @@ import Login from './Pages/Login.jsx';
 import Dashboard from './Pages/Dashboard.jsx';
 import Catalog from './Pages/Catalog.jsx';
 import Members from './Pages/Members.jsx';
+import Settings from './Pages/Settings.jsx';
 import ProtectedRoutes from './Services/ProtectedRoutes.jsx';
 
 function App() {
@@ -35,6 +36,14 @@ function App() {
             element={
               <ProtectedRoutes>
                 <Members />
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="/Settings"
+            element={
+              <ProtectedRoutes>
+                <Settings />
               </ProtectedRoutes>
             }
           />

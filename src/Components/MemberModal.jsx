@@ -8,6 +8,7 @@ function MemberModal(props) {
 
   // Initialize state with props values
   const [formData, setFormData] = useState({
+    memberid: props.memberid,
     status: props.status,
     nameFirst: props.nameFirst,
     nameLast: props.nameLast,
@@ -27,23 +28,38 @@ function MemberModal(props) {
 
   const handleSave = async () => {
     try {
-      // Convert status to number if it's being received as string
-      const dataToUpdate = {
-        ...formData,
-        status: parseInt(formData.status, 1),
-      };
-
-      console.log(`status sent as : ${dataToUpdate.status}`);
-
-      const updatedMember = await memberService.updateMember(
+      const response = await memberService.updateMember(
         props.memberid,
-        dataToUpdate
+        formData
       );
-      if (updatedMember) {
+
+      console.log(`Member Upsert Response: ${JSON.stringify(response)}`);
+
+      if (response) {
+        console.log('updateMember successful!');
         props.saveChanges();
+      } else {
+        console.log('updateMember failed:', response);
       }
-    } catch (error) {
-      console.error('Error updating member:', error);
+    } catch (e) {
+      console.error('Exception updating member:', e);
+    }
+  };
+
+  const handleRemove = async () => {
+    try {
+      const response = await memberService.removeMember(props.memberid);
+
+      console.log(`Member Remove Response: ${JSON.stringify(response)}`);
+
+      if (response) {
+        console.log('Member removal successful!');
+        props.saveChanges();
+      } else {
+        console.log('Member removal failed: ', response);
+      }
+    } catch (e) {
+      console.error('Exception removing member: ', e);
     }
   };
 
@@ -58,12 +74,14 @@ function MemberModal(props) {
             </button>
           </div>
 
+          {/* Member ID */}
           <form className="modal-form">
             <div className="form-group">
               <label>Member ID</label>
               <input type="text" disabled value={props.memberid} />
             </div>
 
+            {/* Member Status */}
             <div className="form-group">
               <label>Status</label>
               <select
@@ -128,16 +146,25 @@ function MemberModal(props) {
             </div>
 
             <div className="modal-actions">
-              <button type="button" onClick={props.onClose}>
-                Cancel
-              </button>
               <button
                 type="button"
-                onClick={handleSave}
-                className="save-button"
+                onClick={handleRemove}
+                className="delete-button"
               >
-                Save
+                Remove Member
               </button>
+              <div>
+                <button type="button" onClick={props.onClose}>
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSave}
+                  className="save-button"
+                >
+                  Save
+                </button>
+              </div>
             </div>
           </form>
         </div>

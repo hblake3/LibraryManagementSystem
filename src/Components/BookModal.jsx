@@ -25,7 +25,7 @@ function BookModal(props) {
   const newGenresSet = new Set(); // create a set that will manage the genre(s) changes
   props.genre.split(', ').forEach((genre) => newGenresSet.add(genre)); // fill the set with the pre-existing genres
 
-  // Handle input changes
+  // Handle input changes for all but genres
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name !== 'genres') {
@@ -36,6 +36,7 @@ function BookModal(props) {
     }
   };
 
+  // for handling changes in the genres fieldset only
   const handleChangeFieldset = (e) => {
     const newSet = new Set(selectedGenres);
     if (!newSet.has(e.target.name)) {
@@ -56,6 +57,8 @@ function BookModal(props) {
   const handleSave = async () => {
     try {
       const response = await bookService.updateBook(props.bookid, formData);
+
+      console.log(`Book Upsert Response: ${JSON.stringify(response)}`);
 
       // Check the success field from the response
       if (response.success) {
@@ -102,7 +105,7 @@ function BookModal(props) {
       <div className="modal-overlay">
         <div className="modal-content">
           <div className="modal-header">
-            <h2 className="modal-title">Edit Book</h2>
+            <h2 className="modal-title">Book Management</h2>
             <button className="modal-close" onClick={props.onClose}>
               <CircleX />
             </button>

@@ -43,6 +43,7 @@ function Member(props) {
         <MemberModal
           saveChanges={handleSaveChanges}
           onClose={handleClick}
+          onRemove={handleClick}
           memberid={props.memberid}
           nameFirst={props.nameFirst}
           nameLast={props.nameLast}

@@ -84,7 +84,7 @@ function Members() {
       )}
       <h1>Library Members</h1>
 
-      <div className="new-member-container">
+      <div className="new-member-book-container">
         <Member_New
           onUpdate={handleMemberUpdate}
           memberid={nextMemberID}

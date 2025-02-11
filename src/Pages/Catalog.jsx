@@ -1,5 +1,6 @@
 import Header from '../Components/Header.jsx';
 import Book from '../Components/Book.jsx';
+import Book_New from '../Components/Book_New.jsx';
 import AlertMessage from '../Components/AlertMessage.jsx';
 import { BookService } from '../Services/BookService';
 import { supabase } from '../Services/SupabaseClient';
@@ -11,6 +12,7 @@ function Catalog() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [nextBookID, setNextBookID] = useState(null);
 
   const bookService = new BookService(supabase);
 
@@ -32,19 +34,23 @@ function Catalog() {
     }
   };
 
-  // used for debugging - displays books retrieved from DB book table
-  // useEffect(() => {
-  //   console.log('Books:', JSON.stringify(books, null, 2));
-  // }, [books]);
-
+  // do this on mount
   useEffect(() => {
-    fetchBooks();
+    const initializeData = async () => {
+      await fetchBooks();
+      await handleNextBookID();
+    };
+    initializeData();
   }, []);
 
   const handleBookUpdate = async () => {
     await fetchBooks(); // First get the fresh book data
     setSaveSuccess(true); // Then show alert message
     console.log(`saveSuccess: ${saveSuccess}`);
+  };
+
+  const handleNextBookID = async () => {
+    setNextBookID(await bookService.getNextBookID());
   };
 
   // Show loading state
@@ -78,6 +84,21 @@ function Catalog() {
         />
       )}
       <h1>Browse Catalog</h1>
+      <div className="new-member-book-container">
+        <Book_New
+          status={1}
+          saveChanges={''}
+          onClose={''}
+          bookid={nextBookID}
+          title={''}
+          author={''}
+          year={null}
+          isbn={''}
+          genre={''}
+          onUpdate={handleBookUpdate}
+        />
+      </div>
+
       <div className="data-container">
         <table className="data-table">
           <thead>

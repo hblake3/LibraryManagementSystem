@@ -5,6 +5,15 @@ export class BookService {
     this.supabase = supabaseClient;
   }
 
+  // get next bookid using rpc
+  async getNextBookID() {
+    const { data: nextBookID, error: nextBookIDError } =
+      await this.supabase.rpc(`get_next_bookid`);
+    if (nextBookIDError)
+      console.log(`Error getting next book ID: ${nextBookIDError}`);
+    return nextBookID;
+  }
+
   async getAllAuthors() {
     const { data: allAuthors, error } = await this.supabase
       .from('author')
@@ -42,6 +51,7 @@ export class BookService {
   // Since update book requires chaining multiple SQL statements, we need to invoke a remote procedure call to a supabase function to ensure atomicity (all or nothing)
 
   async updateBook(bookid, updateData) {
+    console.log('Book Service Receiving:', { bookid, updateData });
     // modify the data to fit the rpc
     const cleanedData = {
       ...updateData,
