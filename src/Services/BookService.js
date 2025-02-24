@@ -61,14 +61,10 @@ export class BookService {
     delete cleanedData.genres; // remove the old 'genres' field (i should really make these the same name...)
     delete cleanedData.bookid; // book id doesn't need to be sent twice
 
-    // console.log('Cleaned data for RPC:', cleanedData); // view data that is sent via rpc
-
     const { data, error } = await this.supabase.rpc('update_book', {
       p_bookid: bookid,
       p_update_data: cleanedData,
     });
-
-    // console.log('RPC Response:', JSON.stringify(data)); // view response from rpc
 
     if (error) throw error;
     return data;

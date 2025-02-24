@@ -41,6 +41,17 @@ h1 {
   line-height: 1.4;
 }
 
+a {
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-size: 0.9rem;
+}
+
+a:hover {
+  color: var(--accent-color);
+}
+
 /* Form Styles */
 form {
   max-width: 400px;
@@ -69,6 +80,79 @@ label {
   border-radius: 4px;
   color: var(--text-primary);
   transition: border-color 0.3s ease;
+}
+
+.input-standalone {
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-primary);
+  width: 75px;
+  height: 1.25rem;
+  padding: 0.25rem 0.5rem;
+  margin: 5px 10px 5px 5px;
+  font-size: 0.9rem;
+  transition: border-color 0.3s ease;
+}
+
+.input-standalone:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(92, 156, 230, 0.2);
+}
+
+.select-standalone {
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-primary);
+  width: 50px;
+  height: 1.75rem;
+  padding: 0.25rem 0.5rem;
+  margin: 5px 10px 5px 5px;
+  font-size: 0.9rem;
+  transition: border-color 0.3s ease;
+}
+
+.select-standalone:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(92, 156, 230, 0.2);
+}
+
+.save-button-standalone {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  padding: 0.75rem 1.5rem;
+  margin: 0 0 0 75px;
+}
+
+.save-button-standalone:hover {
+  background-color: var(--accent-hover);
+}
+
+.save-button-standalone:disabled {
+  background-color: var(--border-color);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.input-standalone.incorrect,
+.select-standalone.incorrect {
+  border-color: var(--error-color);
+  box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
+}
+
+.input-standalone.incorrect:focus,
+.select-standalone.incorrect:focus {
+  border-color: var(--error-color);
+  box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.4);
 }
 
 .input-text-email,
@@ -545,7 +629,7 @@ label {
 }
 
 .alert {
-  background-color: var(--secondary-bg);
+  background-color: var(--accent-color);
   color: var(--text-primary);
   padding: 1rem 1.5rem;
   border-radius: 6px;

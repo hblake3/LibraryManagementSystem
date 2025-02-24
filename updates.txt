@@ -1,0 +1,8 @@
+
+
+----------------------------------------------
+02.11.2025
+  create a new member
+  remove a member
+  create a new book
+  create settings page(no usability yet though)
