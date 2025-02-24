@@ -2,17 +2,16 @@
 
 A full stack React + Supabase app for managing a library's books and members.
 
-
-### Tech Used
-React.js, Javascript, HTML/CSS, Supabase PostgreSQL DB, Vercel, Chart.js
-
 ## View the work-in-progress Live Demo 
-
 ### [Try The Live Demo](https://library-management-system-gilt-ten.vercel.app/)
 ```
 Email: demo@example.com  
 Password: demo123
 ```
+
+## Tech Used
+React.js, Javascript, HTML/CSS, Supabase PostgreSQL DB, Vercel, Chart.js
+
 
 ## Features
  ### Supabase Auth login system
