@@ -22,7 +22,6 @@
   --checkbox-checked-bg: #5c9ce6;
 }
 
-/* Base Styles */
 body {
   background-color: var(--primary-bg);
   color: var(--text-primary);
@@ -39,6 +38,51 @@ h1 {
   font-size: 2rem;
   margin: 2rem 0;
   line-height: 1.4;
+}
+
+.centered-data-container {
+  width: 600px; /* Fixed width */
+  max-width: 90%; /* Allow shrinking */
+  margin: 2rem auto; /* Center horizontally with margin */
+  padding: 2rem 1.5rem;
+  background-color: var(--secondary-bg);
+  border-radius: 8px;
+  overflow-x: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative; /* Position relative for absolute positioning of h1 */
+  text-align: left; /* Ensure text inside is left-aligned */
+}
+
+/* Ensure the H1 aligns with the container */
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align items to the start (left) */
+  width: 100%;
+  max-width: 600px; /* Match the width of the centered-data-container */
+  margin: 0 auto; /* Center the container */
+  margin-top: 2rem;
+}
+
+/* Left-Aligned H1 within Centered Container */
+.left-aligned-h1 {
+  color: var(--text-primary);
+  text-align: left; /* Left align the text */
+  font-size: 2rem;
+  margin: 0 0 1rem 0; /* Remove left margin */
+  line-height: 1.4;
+  padding-left: 1.5rem; /* Align with container's left padding */
+  position: relative; /* Position relative for the pseudo-element */
+  display: inline-block; /* Ensure the h1 takes only the necessary width */
+}
+
+.left-aligned-h1::after {
+  content: '';
+  display: block;
+  width: 110%; /* Extend the HR slightly beyond the h1 */
+  border-top: 2px solid var(--accent-color); /* Accent color for the HR */
+  margin-top: 0.5rem; /* Space between h1 and hr */
+  margin-left: -5%; /* Adjust to center the extended HR */
 }
 
 a {

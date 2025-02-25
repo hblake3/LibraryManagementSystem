@@ -15,6 +15,16 @@ export class SettingsService {
     return data;
   }
 
+  // Get and return the current loan duration from the settings table.
+  async getLoanDuration() {
+    const { data, error } = await this.supabase
+      .from('settings')
+      .select('value')
+      .eq('name', 'loanDuration');
+    if (error) console.log(JSON.stringify(error));
+    return data;
+  }
+
   // Get and return the current max loans from the settings table.
   async getMaxLoans() {
     const { data, error } = await this.supabase
@@ -29,6 +39,7 @@ export class SettingsService {
   async saveChanges(_updateData) {
     let newLateFee = parseFloat(_updateData._lateFee.lateFee).toFixed(2);
     let newMaxLoans = _updateData._maxLoans.maxLoans;
+    let newLoanDuration = _updateData._loanDuration.loanDuration;
     let success = true;
 
     const { feeError } = await this.supabase
@@ -52,6 +63,18 @@ export class SettingsService {
       console.log('Settings update error: ', loansError);
       throw loansError;
     }
+
+    const { durationError } = await this.supabase
+      .from('settings')
+      .update({ value: newLoanDuration })
+      .eq('name', 'loanDuration');
+
+    if (durationError) {
+      success = false;
+      console.log('Settings update error: ', durationError);
+      throw durationError;
+    }
+
     return success;
   }
 }
